@@ -26,7 +26,7 @@ while True:
 
         #operations related to chrome or web
         print("Web controls:")
-        print("3. Open website on chrome\t5. Open chrome\n")
+        print("4. Open website on chrome\t5. Open chrome\n")
         
         #Operations related to media
         print("Media controls:")
@@ -59,70 +59,93 @@ while True:
         #powershell
         if (c == "1") or ("powershell" in c):
             os.system("start powershell")
+            pyttsx3.speak("Opening windows Powershell")
         #command prompt
         elif (c == "2") or ("cmd" in c) or ("command prompt" in c):
             os.system("start cmd")
+            pyttsx3.speak("Opening command prompt")
         #opening a website
         elif (c == "4") or ("search" in c) or ("website" in c) or (".com" in c) or (".in" in c) or (".edu" in c):
+            pyttsx3.speak("Enter the website with domain")
             search = input("Enter webite with domain: ")
             url = "start chrome ? " + search
             os.system(url)
+            pyttsx3.speak("Taking to website")
         #Chrome
         elif (c == "5") or ("chrome" in c):
             os.system("start chrome")
+            pyttsx3.speak("Opening chrome for you")
        
         #Spotify
         elif (c == "7") or ("spotify" in c):
             os.system("start spotify")
+            pyttsx3.speak("launching spotify for you")
         #Vlc player
         elif (c == "8") or ("vlc" in c) or ("vlc player" in c) or ("video player" in c):
             os.system("start vlc")
+            pyttsx3.speak("Opening vlc media player")
         #File Explorer
         elif (c == "9") or ("explorer" in c) or ("files" in c) or ("computer" in c):
             os.system("start explorer")
+            pyttsx3.speak("Opening files")
         #Opening a Path in explorer
         elif (c == "10") or ("path" in c):
             path = "start " + input("paste path here :")
             os.system(path) 
+            pyttsx3.speak("going to the path")
         #windows Media palyer
         elif (c == "11") or ("wmplayer" in c) or ("windows" in c):
             os.system("start wmplayer")
+            pyttsx3.speak("Opening windows media player.")
         #Youtube
         elif (c == "12") or ("youtube" in c):
             os.system("start chrome ? youtube.com")
+            pyttsx3.speak("Opening youtube")
         #Visual Studio Code
         elif (c == "13") or ("visual" in c) or ("code" in c):
             os.system("start code")
+            pyttsx3.speak("redirecting to visual studio code")
         #Jupyter notebook
         elif (c == "14") or ("jupyter notebook" in c):
             os.system("start jupyter notebook")
+            pyttsx3.speak("Opening jupyter notebook")
         #Notepad
         elif (c == "15") or ("editor" in c) or ("notepad" in c):
             os.system("start notepad")
+            pyttsx3.speak("Opening notepad")
         #Microsoft Word
         elif (c == "16") or ("word" in c):
             os.system("start winword") 
+            pyttsx3.speak("Opening M S word")
         #Ms Paint
         elif (c == "17") or ("paint" in c):
             os.system("mspaint")
+            pyttsx3.speak("Opening microsoft paint")
         #Powerpoint
         elif (c == "18") or ("powerpoint" in c):
             os.system("start powerpnt")
+            pyttsx3.speak("Opening powerpoint")
         #Ms Excel
         elif (c == "19") or ("excel" in c):
             os.system("start excel.exe")
+            pyttsx3.speak("Opening excel")
         #Calculator
         elif (c == "20") or ("calculator" in c):
             os.system("start calc")
+            pyttsx3.speak("Here is your calculator")
          #Playing a song on youtube
-        elif (c == "6") or ("song" in c) or ("play" in c):    
+        elif (c == "6") or ("song" in c) or ("play" in c): 
+            pyttsx3.speak("Which song you want me to play sir?")   
             song = input("Enter song: ")
             youtube =  "start chrome ? https://www.youtube.com/results?search_query=" + song
             os.system(youtube)
+            pyttsx3.speak("opening song in youtube")
     #firing a command
     elif c == "3" or ("fire" in c) or ("command" in c):
+        pyttsx3.speak("Enter command")
         command = input("Enter the command > ")
         os.system(command)
+        pyttsx3.speak("Here we go")
     #showing menu again 
     elif c == "menu":
         continue
@@ -131,7 +154,7 @@ while True:
         break
     
     else:
-        pyttsx3.speak("I'm sorry sir")
+        pyttsx3.speak("I'm sorry sir, Looks like I can't do this operation. Try anything else")
         print("Looks like I can't do this operation\nTry anything else !\n")
 
 print(f"Bye {name} !")
