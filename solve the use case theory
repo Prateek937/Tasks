@@ -42,7 +42,7 @@ while True:
         print("Others:")
         print("20. launch Calculator\n")
 
-        print("Press 0 or 'CTRL + C' to exit\n")
+        print("Press 0 or 'CTRL + C' to exit")
         print("press 'menu' to show the menu again")
         
         # avoinding printing the menu again until the user wants to print again
@@ -70,16 +70,12 @@ while True:
         #Chrome
         elif (c == "5") or ("chrome" in c):
             os.system("start chrome")
-        #Playing a song on youtube
-        elif (c == "6") or ("song" in c) or ("play" in c):    
-            song = input("Enter song: ")
-            youtube =  "start chrome ? https://www.youtube.com/results?search_query=" + song
-            os.system(youtube)
+       
         #Spotify
         elif (c == "7") or ("spotify" in c):
             os.system("start spotify")
         #Vlc player
-        elif (c == "8") or ("vlc" in c):
+        elif (c == "8") or ("vlc" in c) or ("vlc player" in c) or ("video player" in c):
             os.system("start vlc")
         #File Explorer
         elif (c == "9") or ("explorer" in c) or ("files" in c) or ("computer" in c):
@@ -118,6 +114,11 @@ while True:
         #Calculator
         elif (c == "20") or ("calculator" in c):
             os.system("start calc")
+         #Playing a song on youtube
+        elif (c == "6") or ("song" in c) or ("play" in c):    
+            song = input("Enter song: ")
+            youtube =  "start chrome ? https://www.youtube.com/results?search_query=" + song
+            os.system(youtube)
     #firing a command
     elif c == "3" or ("fire" in c) or ("command" in c):
         command = input("Enter the command > ")
@@ -136,3 +137,4 @@ while True:
 print(f"Bye {name} !")
 print("Seeya soon !")
 pyttsx3.speak("Bbye !, Keep coding keep learning, Seeya soon !")
+exit()
