@@ -1,0 +1,133 @@
+- hosts: namenode
+  vars:
+    - node: name
+    - dir: '/nn'
+    - IP_Namenode: '192.168.43.85'
+    - com: 
+      - "hadoop-daemon.sh stop namenode"
+      - "hadoop-daemon.sh start namenode"
+    - states:
+      - absent
+      - directory
+  tasks:
+    - name : Copying JDK
+      copy:
+        src: "/home/prateek/Downloads/jdk-8u171-linux-x64.rpm"
+        dest: "/root/jdk-8u171-linux-x64.rpm"
+      
+    - name: Copying Hadoop
+      copy:
+        src: "/home/prateek/Downloads/hadoop-1.2.1-1.x86_64.rpm"
+        dest: "/root/hadoop-1.2.1-1.x86_64.rpm"
+
+    - name: Installing JDK
+      command:
+        cmd: "rpm -i /root/jdk-8u171-linux-x64.rpm"
+      ignore_errors: yes
+
+    - name: Installing Hadoop
+      command:
+        cmd: "rpm -i /root/hadoop-1.2.1-1.x86_64.rpm --force"
+      ignore_errors: yes
+
+    - name: Creating Namnode Directory
+      file:
+        path: "{{ dir }}"
+        state: "{{ item }}"
+      ignore_errors: yes
+      loop: "{{  states }}"
+      
+    - name: configuring hdfs file
+      template:
+        src: "hdfs-site.xml"
+        dest: /etc/hadoop/hdfs-site.xml
+
+    - name: configuring core file
+      template:
+        src: "core-site.xml"
+        dest: /etc/hadoop/core-site.xml
+    
+    - name: Formattin Namenode directory
+      shell:
+        cmd: "echo 'Y' | hadoop namenode -format"
+
+    - name: Starting Namenode
+      command:
+        cmd: "{{ item }}"
+      ignore_errors: yes
+      loop: "{{ com }}"
+
+    - name: Getting Report-1
+      command:
+        cmd: "hadoop dfsadmin -report"
+      register: d
+
+    - name: Report-1
+      debug:
+        var: d['stdout_lines']
+
+
+- hosts: datanode
+  vars:
+    - node: data
+    - dir: '/dn'
+    - IP_Namenode: '192.168.43.85'
+    - states:
+      - absent
+      - directory
+    - com:
+      - "hadoop-daemon.sh stop datanode"
+      - "hadoop-daemon.sh start datanode"
+
+  tasks:
+    - name : Copying JDK
+      copy:
+        src: "/home/prateek/Downloads/jdk-8u171-linux-x64.rpm"
+        dest: "/root/jdk-8u171-linux-x64.rpm"
+
+    - name: Copying Hadoop
+      copy:
+        src: "/home/prateek/Downloads/hadoop-1.2.1-1.x86_64.rpm"
+        dest: "/root/hadoop-1.2.1-1.x86_64.rpm"
+
+    - name: Installing JDK
+      command:
+        cmd: "rpm -i /root/jdk-8u171-linux-x64.rpm"
+      ignore_errors: yes
+    
+    - name: Installing Hadoop
+      command:
+        cmd: "rpm -i /root/hadoop-1.2.1-1.x86_64.rpm --force"
+      ignore_errors: yes
+
+    - name: Creating Datanode Directory
+      file:
+        path: "{{ dir }}"
+        state: "{{ item }}"
+      ignore_errors: yes
+      loop: "{{  states }}"
+
+    - name: configuring hdfs file
+      template:
+        src: "hdfs-site.xml"
+        dest: /etc/hadoop/hdfs-site.xml
+
+    - name: configuring core file
+      template:
+        src: "core-site.xml"
+        dest: /etc/hadoop/core-site.xml
+
+    - name: Starting Datanode
+      command:
+        cmd: "{{ item }}"
+      ignore_errors: yes
+      loop: "{{ com }}"
+    
+    - name: Getting Report-2
+      command:
+        cmd: "hadoop dfsadmin -report"
+      register: d
+    
+    - name: Report-2
+      debug:
+        var: d['stdout_lines']
