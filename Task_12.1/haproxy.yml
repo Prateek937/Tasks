@@ -1,0 +1,41 @@
+- hosts: webservers
+  tasks:
+    - name: Installing httpd Software
+      package:
+        name: httpd
+        state: present
+
+    - name: Installing php
+      package:
+        name: php
+        state: present
+
+    - name: Deploying Webpages
+      template:
+        src: index.php
+        dest: /var/www/html/index.php
+
+    - name: Starting the service
+      service:
+        name: httpd
+        state: restarted
+      changed_when: false
+
+- name: Configuring Load Balancer
+  hosts: load_balancer
+  tasks:
+    - name: Installing Haproxy
+      package:
+        name: haproxy
+        state: present
+
+    - name: Configuring haproxy.cfg file
+      template:
+        src: haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+
+    - name: Starting load balancer
+      service:
+        name: haproxy
+        state: restarted
+      changed_when: false
