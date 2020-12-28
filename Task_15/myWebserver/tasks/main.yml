@@ -1,0 +1,17 @@
+---
+# tasks file for myWebserver
+- name: Installing Packages'
+  package: 
+    name: '{{ item }}'
+    state: present
+  loop: '{{ packages }}'
+
+- name: starting 
+  service:
+    name: httpd
+    state: restarted
+
+- name: copying
+  copy:
+    src: 'index.php'
+    dest: '/var/www/html/index.php'

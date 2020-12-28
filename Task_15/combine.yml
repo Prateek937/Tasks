@@ -1,0 +1,7 @@
+- hosts: gui
+  roles:
+    - role: myWebserver
+
+- hosts: cli
+  roles:
+    - role: myLoadBalancer

@@ -1,0 +1,12 @@
+---
+# tasks file for my_lo
+- name: Installing haproxy
+  package:
+    name: haproxy
+
+- name: Configuring haproxy.cfg
+  template:
+    src: 'haproxy.cfg.j2'
+    dest: '/etc/haproxy/haproxy.cfg'
+  notify: Starting Load Balancer
+
