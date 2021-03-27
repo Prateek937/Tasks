@@ -1,0 +1,44 @@
+- hosts: localhost
+  vars:
+    - x:
+      - python3-pip
+      - virtualenv
+      - python3-setuptools
+
+  tasks:
+    - name: Configuring Docker yum Repo
+      yum_repository:
+        name: docker
+        description: Docker repo
+        baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
+        gpgcheck: no
+
+    - name: Installing Docker-ce
+      command:
+        cmd: "yum install docker-ce --nobest -y"
+      changed_when: false
+
+    - name: Starting Container services
+      service:
+        name: docker
+        state: started
+      changed_when: false
+
+    - name: Installing Essentials
+      package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ x }}"
+
+    - name: Installing Docker API
+      pip:
+        name: docker
+
+    - name: Running Docker Container
+      docker_container:
+        name: ddtask
+        image: httpd_ssh
+        state: started
+        ports:
+          - "8082:80"     
+
