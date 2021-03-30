@@ -1,13 +1,7 @@
 - hosts: all
+  vars_files:
+    "{{ ansible_facts.distribution }}.yml"
   tasks:
-    - name: Include when OS family Debian
-      include_vars: Ubuntu.yml
-      when: ansible_facts.os_family == "Debian"
-    
-    - name: Include when OS family Fedora
-      include_vars: Fedora.yml
-      when: ansible_facts.os_family == "RedHat"
-    
     - name: Installing Packages
       package:
         name: "{{ pkg }}"

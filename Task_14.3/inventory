@@ -1,5 +1,5 @@
 [ubuntu]
-192.168.135.154 ansible_connection=ssh ansible_user=root ansible_ssh_pass=fuck
+192.168.226.154 ansible_connection=ssh ansible_user=root ansible_ssh_pass=fuck
 
 [fedora]
 localhost ansible_connection=local
