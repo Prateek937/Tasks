@@ -3,7 +3,7 @@ import threading
 
 class server:
     def __init__(self):
-        self.SERVER = '192.168.8.126'
+        self.SERVER = '192.168.85.126'
         self.PORT = 1237
         self.ADDR = (self.SERVER, self.PORT)
         self.HEADER = 64
@@ -33,15 +33,14 @@ class server:
         print("[STARTED] Chat program ready.")
         
         self.server.listen()
-        while True:
-            self.conn, self.addr = self.server.accept()
-            self.thread = threading.Thread(target=self.handle_client, args=(self.conn, self.addr))
-            self.thread.start()
-            print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1} ")
+        self.conn, self.addr = self.server.accept()
+        self.thread = threading.Thread(target=self.handle_client, args=(self.conn, self.addr))
+        self.thread.start()
+        print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1} ")
 
 class client:
     def __init__(self):
-        self.SERVER = '192.168.8.154'
+        self.SERVER = '192.168.85.154'
         self.PORT = 1236
         self.ADDR = (self.SERVER, self.PORT)
         self.HEADER = 64
