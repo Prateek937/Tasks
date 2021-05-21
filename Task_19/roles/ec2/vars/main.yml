@@ -1,5 +1,5 @@
 ---
-# vars file for roles/ec2
+# vars file for role roles/ec2
 
 nodes:
     - "MasterNode"
