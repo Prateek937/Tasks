@@ -22,7 +22,7 @@ def server():
     ip = "192.168.163.126"
     port = 1235
 
-    # binding the port and IP to the socket
+    # binding the port and IP to the socket   
     sock.bind((ip, port))
 
     # receiving packet from the client or another server
