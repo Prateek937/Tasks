@@ -3,7 +3,7 @@ import threading
 
 class server:
     def __init__(self):
-        self.SERVER = "192.168.85.126"
+        self.SERVER = "192.168.163.126"
         print(self.SERVER)
         self.PORT = 1234
         self.ADDR = (self.SERVER, self.PORT)
@@ -69,7 +69,7 @@ class server:
             self.thread = threading.Thread(target=self.handle_client, args=(self.conn, self.addr))
             self.thread.start()
             # printing active connections
-            print(f" [ACTIVE CONNECTION] {threading.activeCount()-1}")
+            print("[ACTIVE CONNECTION] ", {threading.activeCount()-2})
 
 
 print("[SERVER STARTING...]")

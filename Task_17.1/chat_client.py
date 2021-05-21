@@ -3,7 +3,7 @@ import threading
 
 class client:
     def __init__(self):
-        self.SERVER = "192.168.85.126"
+        self.SERVER = "192.168.163.126"
         self.PORT = 1234
         self.ADDR = (self.SERVER, self.PORT)
         self.HEADER = 64

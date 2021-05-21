@@ -1,0 +1,8 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+[master]
+13.126.241.92 ansible_user=ec2-user ansible_ssh_private_key_file=/home/prateek/Downloads/hadoop.pem
+
+[workers]
+65.0.184.163 ansible_user=ec2-user ansible_ssh_private_key_file=/home/prateek/Downloads/hadoop.pem
+15.206.68.125 ansible_user=ec2-user ansible_ssh_private_key_file=/home/prateek/Downloads/hadoop.pem
+# END ANSIBLE MANAGED BLOCK

@@ -4,7 +4,7 @@ import threading
 def client():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    serverIP = "192.168.89.154"
+    serverIP = "192.168.163.154"
     serverPort = 1234
     while True:
         msg = input().encode()
@@ -19,7 +19,7 @@ def server():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     #  IP of server(linux machine)
-    ip = "192.168.89.126"
+    ip = "192.168.163.126"
     port = 1235
 
     # binding the port and IP to the socket
