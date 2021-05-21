@@ -1,0 +1,7 @@
+---
+# vars file for roles/ec2
+
+nodes:
+    - "MasterNode"
+    - "WorkerNode-1"
+    - "WorkerNode-2"

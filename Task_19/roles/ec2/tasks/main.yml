@@ -1,0 +1,68 @@
+---
+# tasks file for roles/ec2
+
+- name: Launching EC2 Instance
+  ec2:
+    key_name: hadoop
+    instance_type: t2.micro
+    image: ami-0585b5789d3564fdb
+    group: default
+    count: 1
+    region: ap-south-1
+    vpc_subnet_id: subnet-b712fedc
+    assign_public_ip: yes
+    instance_tags:
+      Name: "{{ item }}"  
+    wait: yes
+  loop: "{{nodes}}"
+  register: instancee
+
+- debug:
+    msg: "{{ instancee['results'][0]['instances'][0]['public_ip'] }}"
+  register: ipm
+
+- name: add variables to dummy host
+  add_host:
+    name: "{{ ipm['msg'] }}"
+    groups: "master" 
+    ansible_user: "ec2-user"
+    ansible_ssh_private_key_file: /home/prateek/Downloads/hadoop.pem
+
+
+- debug:
+    msg: "{{ instancee['results'][1]['instances'][0]['public_ip'] }}"
+  ignore_errors: yes
+  register: ipw1
+
+- name: add variables to dummy host
+  add_host:
+    name: "{{ ipw1['msg'] }}"
+    groups: "worker" 
+    ansible_user: "ec2-user"
+    ansible_ssh_private_key_file: /home/prateek/Downloads/hadoop.pem
+
+- debug:
+    msg: "{{ instancee['results'][2]['instances'][0]['public_ip'] }}"
+  ignore_errors: yes
+  register: ipw2
+
+- name: add variables to dummy host
+  add_host:
+    name: "{{ ipw2['msg'] }}"
+    groups: "worker" 
+    ansible_user: "ec2-user"
+    ansible_ssh_private_key_file: /home/prateek/Downloads/hadoop.pem
+
+- name: Wait for instances to Initialize
+  pause:
+    minutes: 1
+
+# - name: Writing IPs to inventory
+#   blockinfile:
+#     path: kubehosts
+#     block: |
+#            [master]
+#            {{ ipm['msg'] }} ansible_user=ec2-user ansible_ssh_private_key_file=/home/prateek/Downloads/hadoop.pem
+#            [workers]
+#            {{ ipw1['msg'] }} ansible_user=ec2-user ansible_ssh_private_key_file=/home/prateek/Downloads/hadoop.pem
+#            {{ ipw2['msg'] }} ansible_user=ec2-user ansible_ssh_private_key_file=/home/prateek/Downloads/hadoop.pem

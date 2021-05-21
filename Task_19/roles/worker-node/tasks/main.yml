@@ -1,0 +1,23 @@
+---
+# tasks file for roles/worker-node
+
+- name: Installing iproute-tc
+  package:
+    name: iproute-tc
+    state: present
+
+- name: Setting bridge-nf-call-iptables to 1
+  shell: |
+    cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+    net.bridge.bridge-nf-call-ip6tables = 1
+    net.bridge.bridge-nf-call-iptables = 1
+    EO
+- name: Restarting bridge settings
+  shell: "sysctl --system"
+- name: Printing token
+  debug:
+    var: shared_variable.stdout   
+
+- name: Joining Master
+  shell: "{{ shared_variable.stdout }}"
+  register: joined

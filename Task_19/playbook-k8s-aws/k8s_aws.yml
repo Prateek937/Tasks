@@ -17,6 +17,7 @@
           - kubelet
           - kubeadm
           - kubectl
+    
     - name: Installing kubeadm, kubelet and kubectl
       yum:
         name: 
@@ -31,6 +32,7 @@
         name: docker
         state: started
         enabled: yes
+    
     - name: configuring daemon.json
       copy:
         dest: "/etc/docker/daemon.json"
@@ -88,6 +90,9 @@
     - name: Changing owner permission
       shell: "sudo chown $(id -u):$(id -g) /root/.kube/config"
 
+    - name: Configuring flannel
+      shell: kubectl apply  -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
     - name: Generating token
       shell: "kubeadm token create  --print-join-command"
       register: token
@@ -123,9 +128,4 @@
     - name: Joining Master
       shell: "{{ shared_variable.stdout }}"
       register: joined
-- name: Configuring flannel
-  hosts: master
-  tasks:
-    - name: Configuring flannel
-      shell: kubectl apply  -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 

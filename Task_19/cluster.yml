@@ -1,0 +1,22 @@
+- name: Provisioning EC2 Instances
+  hosts: localhost
+  roles:
+    - ec2
+
+- name: Configuring common dependencies on Maseter and Worker
+  hosts: master, worker
+  become: yes
+  roles:
+    - common-dependencies-cluster
+
+- name: Configuring Master
+  hosts: master
+  become: yes
+  roles:
+    - master-node
+
+- name: Configuring Worker
+  hosts: worker
+  become: yes
+  roles:
+    - worker-node
