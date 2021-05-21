@@ -17,7 +17,7 @@
           - kubelet
           - kubeadm
           - kubectl
-    - name: Installing kubeadm, kubelet and kubectl"
+    - name: Installing kubeadm, kubelet and kubectl
       yum:
         name: 
           - kubeadm
