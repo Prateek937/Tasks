@@ -1,0 +1,6 @@
+---
+# vars file for roles/master-node
+
+admin_conf: /etc/kubernetes/admin.conf
+kube_config: /root/.kube/config
+kube_directory: /root/.kube

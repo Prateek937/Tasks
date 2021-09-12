@@ -1,0 +1,19 @@
+- hosts: localhost
+  vars:
+    - security_group: "wordpress_tas"
+    - region: "ap-south-1"
+    - vpc_id: "vpc-f58b4d9e"
+  tasks:
+    - name: example using security group rule descriptions
+      ec2_group:
+        name: "{{ security_group }}"
+        description: "All traffic enabled"
+        vpc_id: "{{ vpc_id }}"
+        region: "{{ region }}"
+        rules:
+          - proto: all
+            from_port: 0
+            to_port: 65535
+            cidr_ip: 0.0.0.0/0
+            rule_desc: All Traffic
+          

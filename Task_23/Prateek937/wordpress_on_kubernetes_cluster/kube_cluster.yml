@@ -1,0 +1,22 @@
+- name: Provisioning EC2 Instances
+  hosts: localhost
+  roles:
+    - ec2
+   
+- name: Configuring Master
+  hosts: master
+  become: yes
+  roles:
+    - master-node
+
+- name: Configuring Worker
+  hosts: workers
+  become: yes
+  roles:
+    - worker-node
+
+- name: Launching Worpress Infrastructure
+  hosts: master
+  become: yes
+  roles:
+    - wordpress-mysql

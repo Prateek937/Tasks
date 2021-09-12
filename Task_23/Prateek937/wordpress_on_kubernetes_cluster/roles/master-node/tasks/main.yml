@@ -1,0 +1,97 @@
+---
+# tasks file for roles/master-node
+- name: Installing docker
+  yum:
+    name: docker
+    state: present
+
+- name: Yum repo for K8s
+  yum_repository:
+    name: kubernetes
+    description: kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+    gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    exclude:
+      - kubelet
+      - kubeadm
+      - kubectl
+
+- name: Installing kubeadm, kubelet and kubectl
+  yum:
+    name:
+      - kubeadm
+      - kubelet
+      - kubectl
+    state: present
+    disable_excludes: kubernetes
+
+- name: Starting docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: configuring daemon.json
+  copy:
+      dest: "/etc/docker/daemon.json"
+      src: daemon-docker
+
+- name: Restarting docker services
+  service:
+    name: docker
+    state: restarted
+    enabled: yes
+
+- name: Enabling kubelet
+  service:
+    name: kubelet
+    state: started
+    enabled: yes
+
+- name: Pulling essential images
+  shell: "kubeadm config images pull"
+  
+- name: Installing iproute-tc
+  package:
+    name: iproute-tc
+    state: present
+    
+- name: Setting bridge-nf-call-iptables to 1
+  shell: |
+    cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+    net.bridge.bridge-nf-call-ip6tables = 1
+    net.bridge.bridge-nf-call-iptables = 1
+    EOF
+    
+- name: Restarting bridge settings
+  shell: "sysctl --system"
+
+- name: Initializing the Master Node
+  shell: "kubeadm init --pod-network-cidr=10.244.0.0/16  --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem"
+  ignore_errors: yes
+  register: init 
+    
+- name: Creating .kube directory
+  file:
+    path: "{{ kube_directory }}"
+    state: directory
+
+- name: Copying admin.conf
+  shell: "cp -i {{  admin_conf  }} {{  kube_config  }}"
+    
+- name: Changing owner permission
+  shell: "sudo chown $(id -u):$(id -g) {{ kube_config }}"
+
+- name: Configuring flannel
+  shell: kubectl apply  -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+- name: Generating token
+  shell: "kubeadm token create  --print-join-command"
+  register: token
+
+- name: add variables to dummy host
+  add_host:
+    name: "variable_holder"
+    shared_variable:  "{{ token }}"
+

@@ -1,0 +1,7 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+[master]
+13.235.115.131 ansible_user=ec2-user ansible_ssh_private_key_file=/root/a/Tasks/Task_23/Prateek937/wordpress_on_kubernetes_cluster/kubernetes.pem
+[workers]
+15.206.158.117 ansible_user=ec2-user ansible_ssh_private_key_file=/root/a/Tasks/Task_23/Prateek937/wordpress_on_kubernetes_cluster/kubernetes.pem
+13.233.3.217 ansible_user=ec2-user ansible_ssh_private_key_file=/root/a/Tasks/Task_23/Prateek937/wordpress_on_kubernetes_cluster/kubernetes.pem
+# END ANSIBLE MANAGED BLOCK

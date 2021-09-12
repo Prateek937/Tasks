@@ -1,0 +1,30 @@
+---
+# tasks file for wordpress-mysql
+
+- name: Installing pip
+  package:
+    name:
+      - python3-pip
+      - python-pip
+
+#- name: Installing essentials
+ # pip:
+  #  name:
+   #   - openshift
+    #  - PyYAML
+
+- name: Copying Yaml files
+  copy:
+    src: '{{ item }}'
+    dest: /home/ec2-user/
+  loop:
+    - mysql.yaml
+    - wordpress-deployment.yaml
+
+- name: Launching mysql database
+  shell: 'kubectl apply -f /home/ec2-user/mysql.yaml'
+
+- name: Lauching wordpress pod
+  shell: 'kubectl apply -f /home/ec2-user/wordpress-deployment.yaml'
+
+

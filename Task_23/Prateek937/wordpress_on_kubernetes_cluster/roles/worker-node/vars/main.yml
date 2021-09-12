@@ -1,0 +1,4 @@
+---
+# vars file for roles/worker-node
+
+shared_variable: "{{ hostvars['variable_holder']['shared_variable'] }}"

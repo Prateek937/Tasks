@@ -1,0 +1,5 @@
+  - name: Launching Worpress Infrastructure
+    hosts: master
+    become: yes
+    roles:
+      - wordpress-mysql
