@@ -1,0 +1,17 @@
+---
+# vars file for role roles/ec2
+# 
+# edit the vaiables here accordingly
+
+nodes:
+  - "MasterNode"
+  - "WorkerNode-1"
+  - "WorkerNode-2"
+key_name: "kubernetes"
+instance_type: "t2.micro"
+ami_id: "ami-04db49c0fb2215364"
+security_group: "wordpress_task" 
+region: "ap-south-1"
+subnet_id: "subnet-b712fedc"
+vpc_id: "vpc-f58b4d9e"
+private_key_file: "/root/a/Tasks/Task_23/Prateek937/wordpress_on_kubernetes_cluster/kubernetes.pem"

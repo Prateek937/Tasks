@@ -1,0 +1,86 @@
+---
+# tasks file for roles/ec2
+- name: Installing requisites
+  pip:
+    name:
+      - boto
+      - boto3
+
+- name: example using security group rule descriptions
+  ec2_group:
+    name: "{{ security_group }}"
+    description: "All traffic enabled"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ region }}"
+    rules:
+      - proto: all
+        from_port: 0
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+        rule_desc: All Traffic
+
+- name: Launching EC2 Instance
+  ec2:
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ ami_id }}"
+    group: "{{ security_group }}"
+    count: 1
+    region: "{{ region }}"
+    vpc_subnet_id: "{{ subnet_id }}"
+    assign_public_ip: yes
+    instance_tags:
+      Name: "{{ item }}"  
+    wait: yes
+  loop: "{{nodes}}"
+  register: instancee
+
+- debug:
+    msg: "{{ instancee['results'][0]['instances'][0]['public_ip'] }}"
+  register: ipm
+
+- name: add variables to dummy host
+  add_host:
+    name: "{{ ipm['msg'] }}"
+    groups: "master" 
+    ansible_user: "ec2-user"
+    ansible_ssh_private_key_file: "{{ private_key_file }}"
+
+
+- debug:
+    msg: "{{ instancee['results'][1]['instances'][0]['public_ip'] }}"
+  ignore_errors: yes
+  register: ipw1
+
+- name: add variables to dummy host
+  add_host:
+    name: "{{ ipw1['msg'] }}"
+    groups: "workers" 
+    ansible_user: "ec2-user"
+    ansible_ssh_private_key_file: "{{ private_key_file }}"
+
+- debug:
+    msg: "{{ instancee['results'][2]['instances'][0]['public_ip'] }}"
+  ignore_errors: yes
+  register: ipw2
+
+- name: add variables to dummy host
+  add_host:
+    name: "{{ ipw2['msg'] }}"
+    groups: "workers" 
+    ansible_user: "ec2-user"
+    ansible_ssh_private_key_file: "{{ private_key_file }}"
+
+- name: Wait for instances to Initialize
+  pause:
+    minutes: 2
+
+- name: Writing IPs to inventory
+  blockinfile:
+     path: kubehosts
+     block: |
+            [master]
+            {{ ipm['msg'] }} ansible_user=ec2-user ansible_ssh_private_key_file={{ private_key_file }}
+            [workers]
+            {{ ipw1['msg'] }} ansible_user=ec2-user ansible_ssh_private_key_file={{ private_key_file }}
+            {{ ipw2['msg'] }} ansible_user=ec2-user ansible_ssh_private_key_file={{ private_key_file }}
